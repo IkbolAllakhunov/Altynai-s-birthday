@@ -349,6 +349,7 @@ body {
     border-radius: 15px;
     height: auto;
     aspect-ratio: 1 / 1;
+    width: 100%;
 }
 
 .memory-item {
@@ -517,9 +518,7 @@ body {
     
     .memory-image { border-radius: 10px; }
     
-    .memories-slider {
-        height: 150px;
-    }
+    .memories-slider { height: auto; }
 }
 
 @media (max-width: 480px) {
