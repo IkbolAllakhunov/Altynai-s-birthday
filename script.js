@@ -1,24 +1,14 @@
 // Глобальные переменные
 let currentMemoryIndex = 0;
-let gameScore = 0;
-let gameHearts = [];
 let confettiActive = false;
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем обработчик клика на торт
     const cake = document.querySelector('.birthday-cake');
     if (cake) {
         cake.addEventListener('click', lightCandles);
     }
-    
-    // Инициализируем игру
-    initializeGame();
-    
-    // Добавляем звуковые эффекты
     setupAudio();
-    
-    // Инициализируем конфетти
     initializeConfetti();
 });
 
@@ -68,10 +58,7 @@ function startCelebration() {
         // Воспроизводим звук поздравления
         playSound('celebration');
         
-        // Запускаем игру через 2 секунды
-        setTimeout(() => {
-            startGame();
-        }, 2000);
+    // (убрана мини-игра)
         
     }, 500);
 }
@@ -188,106 +175,7 @@ function initializeConfetti() {
     };
 }
 
-// Инициализация игры
-function initializeGame() {
-    const gameArea = document.getElementById('heartsContainer');
-    if (!gameArea) return;
-    
-    window.startGame = function() {
-        // Очищаем предыдущие сердечки
-        gameArea.innerHTML = '<div class="score">Счет: <span id="score">0</span></div>';
-        
-        // Сбрасываем счет
-        gameScore = 0;
-        updateScore();
-        
-        // Создаем новые сердечки
-        createGameHearts();
-    };
-}
-
-// Создание игровых сердечек
-function createGameHearts() {
-    const gameArea = document.getElementById('heartsContainer');
-    const heartEmojis = ['❤️', '💖', '💕', '💗', '💝', '💘'];
-    
-    // Создаем 8-12 сердечек
-    const heartCount = Math.floor(Math.random() * 5) + 8;
-    
-    for (let i = 0; i < heartCount; i++) {
-        setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.className = 'game-heart';
-            heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-            heart.style.left = Math.random() * 80 + '%';
-            heart.style.top = Math.random() * 60 + '%';
-            
-            heart.addEventListener('click', function() {
-                collectHeart(this);
-            });
-            
-            gameArea.appendChild(heart);
-        }, i * 300);
-    }
-}
-
-// Сбор сердечка
-function collectHeart(heartElement) {
-    // Анимация исчезновения
-    heartElement.style.transform = 'scale(0)';
-    heartElement.style.opacity = '0';
-    heartElement.classList.add('clicked');
-    
-    // Увеличиваем счет
-    gameScore++;
-    updateScore();
-    
-    // Воспроизводим звук
-    playSound('heart');
-    
-    // Создаем маленькое конфетти
-    createSmallConfetti();
-    
-    // Удаляем элемент
-    setTimeout(() => {
-        heartElement.remove();
-    }, 300);
-}
-
-// Обновление счета
-function updateScore() {
-    const scoreElement = document.getElementById('score');
-    if (scoreElement) {
-        scoreElement.textContent = gameScore;
-    }
-}
-
-// Создание маленького конфетти
-function createSmallConfetti() {
-    const canvas = document.getElementById('confetti');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
-    
-    // Создаем несколько маленьких частиц
-    for (let i = 0; i < 5; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 4 + 2;
-        
-        ctx.save();
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, size, size);
-        ctx.restore();
-    }
-    
-    // Очищаем через 100мс
-    setTimeout(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }, 100);
-}
+// (мини-игра и счет удалены)
 
 // Управление слайдером воспоминаний
 window.changeMemory = function(direction) {
@@ -310,8 +198,8 @@ window.changeMemory = function(direction) {
     // Добавляем активный класс
     memories[currentMemoryIndex].classList.add('active');
     
-    // Воспроизводим звук
-    playSound('heart');
+    // Звук для переключения можно оставить мягким
+    playSound('celebration');
 };
 
 // Перезапуск поздравления
@@ -337,8 +225,7 @@ window.restartCelebration = function() {
         });
     }
     
-    // Сбрасываем игру
-    gameScore = 0;
+    // (мини-игра удалена)
     
     // Запускаем конфетти
     setTimeout(() => {
@@ -378,12 +265,7 @@ function vibrate(pattern = [100]) {
     }
 }
 
-// Добавляем вибрацию при клике на сердечки
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('game-heart')) {
-        vibrate([50]);
-    }
-});
+// (вибрация для клика по game-heart удалена)
 
 // Автоматическое переключение слайдера воспоминаний
 setInterval(() => {
@@ -452,3 +334,4 @@ if (window.DeviceOrientationEvent) {
 }
 
 console.log('🎉 Поздравление с днем рождения загружено! 🎂');
+
